@@ -46,7 +46,7 @@ function lwp_ldap_search($user){
 			$filter = "(".lwp_ldap_type_base.'='.$user.")";
 			$sr = ldap_search($ldapconn, lwp_ldap_dn, $filter, array(lwp_ldap_type_base, lwp_ldap_type_fullname)) or die ("Error in search query");
 			if ($entr = ldap_get_entries($ldapconn, $sr)){
-				return iconv( "windows-1251", "UTF-8",$entr[0][lwp_ldap_type_fullname][0]);
+				return $entr[0][lwp_ldap_type_fullname][0];
 			}
 		}else{
 			$ERR = "Error binding to LDAP server (username, pass, etc.)";
@@ -67,5 +67,17 @@ function lwp_check_month_exists($month, $year, $dbc){
 	$get = mysql_query('SELECT COUNT(*) FROM `'.db_table.'` WHERE `Time` LIKE "'.$year.'-'.$month.'-%"', $dbc);
 	$row = mysql_fetch_assoc($get);
 	if ($row['COUNT(*)'] > 0){return true;}else{return false;};
+}
+function lwp_ldap_get($user){
+	if (lwp_ldap_use){
+		$us = lwp_ldap_search($user);
+		if ($us <> ""){
+			return $us;
+		}else{
+			return $user;
+		}
+	}else{
+		return $user;
+	}
 }
 ?>
