@@ -1,0 +1,5 @@
+$mysql_ip = "127.0.0.1"
+$mysql_user = "user"
+$mysql_pass = "password"
+$mysql_database = "database"
+$mysql_table = "table"
